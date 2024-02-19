@@ -7,34 +7,73 @@ const Login = () => {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = e.target.user.value.trim();
-    const pass = e.target.pass.value.trim();
-    console.log(user, pass);
-    if (user !== "" && pass !== "") {
-      const formData = new FormData();
-      formData.append("user", user);
-      formData.append("pass", pass);
-      
-      const xmlHttpReq = new XMLHttpRequest();
-      xmlHttpReq.open(
-        "POST",
-        "https://handmadegames.es/chat/API/v1/chat/login",
-        true
-      );
-      xmlHttpReq.onreadystatechange = () => {
-        if (xmlHttpReq.readyState === 4 && xmlHttpReq.status === 200) {
-          let respuestaLogin;
-          try {
-            respuestaLogin = JSON.parse(xmlHttpReq.responseText);
-            console.log(respuestaLogin);
-          } catch (error) {
-            console.error("Error al parsear la respuesta JSON:", error);
-          }
-        }
-      };
-      xmlHttpReq.send(formData);
+    if (e.target.user.value !== "" && e.target.pass.value !== "") {
+      setFormData({
+        user: e.target.user.value.trim(),
+        pass: e.target.pass.value.trim(),
+      });
     }
   };
+  useEffect(() => {
+    const enviarFormulario = async () => {
+      if (formData.user !== "" && formData.pass !== "") {
+        const formDataToSend = new FormData();
+        formDataToSend.append("user", formData.user);
+        formDataToSend.append("pass", formData.pass);
+        
+        const xmlHttpReq = new XMLHttpRequest();
+        xmlHttpReq.open(
+          "POST",
+          "https://handmadegames.es/chat/API/v1/chat/login",
+          true
+        );
+        xmlHttpReq.onreadystatechange = () => {
+          if (xmlHttpReq.readyState === 4 && xmlHttpReq.status === 200) {
+            let respuestaLogin;
+            try {
+              respuestaLogin = JSON.parse(xmlHttpReq.responseText);
+              console.log(respuestaLogin);
+            } catch (error) {
+              console.error("Error al parsear la respuesta JSON:", error);
+            }
+          }
+        };
+        xmlHttpReq.send(formDataToSend);
+      }
+    };
+    enviarFormulario();
+  }, [formData]);
+  // Este funca
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const user = e.target.user.value.trim();
+  //   const pass = e.target.pass.value.trim();
+  //   console.log(user, pass);
+  //   if (user !== "" && pass !== "") {
+  //     const formData = new FormData();
+  //     formData.append("user", user);
+  //     formData.append("pass", pass);
+      
+  //     const xmlHttpReq = new XMLHttpRequest();
+  //     xmlHttpReq.open(
+  //       "POST",
+  //       "https://handmadegames.es/chat/API/v1/chat/login",
+  //       true
+  //     );
+  //     xmlHttpReq.onreadystatechange = () => {
+  //       if (xmlHttpReq.readyState === 4 && xmlHttpReq.status === 200) {
+  //         let respuestaLogin;
+  //         try {
+  //           respuestaLogin = JSON.parse(xmlHttpReq.responseText);
+  //           console.log(respuestaLogin);
+  //         } catch (error) {
+  //           console.error("Error al parsear la respuesta JSON:", error);
+  //         }
+  //       }
+  //     };
+  //     xmlHttpReq.send(formData);
+  //   }
+  // };
   // useEffect(() => {
   //   const respuesta = async () => {
   //     const xmlHttpReq = new XMLHttpRequest();
