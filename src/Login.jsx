@@ -1,13 +1,68 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 
 const Login = () => {
-  return (
-    <form method='post' className='w-[500px] mx-auto'>
-        <input type="text" placeholder='Usuario' className='w-full bg-white rounded-lg mb-5 p-3'/>
-        <input type="password" placeholder='Password' className='w-full bg-white rounded-lg mb-5 p-3'/>
-        <input type="submit" value="Enviar" className='w-full bg-green-500 p-3 rounded-lg text-white'/>
-    </form>
-  )
-}
+  const [formData, setFormData] = useState({
+    user: "",
+    pass: "",
+  });
 
-export default Login
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (e.target.user.value != "" && e.target.pass.value != "") {
+      setFormData({
+        user: e.target.user.value.trim(),
+        pass: e.target.pass.value.trim(),
+      });
+      console.log(formData);
+    }
+  };
+  useEffect(() => {
+    const respuesta = async () => {
+      const xmlHttpReq = new XMLHttpRequest();
+      const formData = new FormData();
+      let respuestaLogin;
+      formData.append("user", formData.user);
+      formData.append("pass", formData.password);
+      xmlHttpReq.open(
+        "POST",
+        "https://handmadegames.es/chat/API/v1/chat/login",
+        true
+      );
+      xmlHttpReq.onreadystatechange = () => {
+        if (xmlHttpReq.readyState === 4 && xmlHttpReq.status === 200) {
+          try {
+            respuestaLogin = JSON.parse(xmlHttpReq.responseText);
+          } catch (error) {
+            console.error("Error al parsear la respuesta JSON:", error);
+          }
+        }
+      };
+      xmlHttpReq.send(formData);
+      console.log(respuestaLogin);
+    };
+    respuesta();
+  }, [formData]);
+  return (
+    <form method="post" className="w-[500px] mx-auto" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Usuario"
+        name="user"
+        className="w-full bg-white rounded-lg mb-5 p-3"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        name="pass"
+        className="w-full bg-white rounded-lg mb-5 p-3"
+      />
+      <input
+        type="submit"
+        value="Enviar"
+        className="w-full bg-green-500 p-3 rounded-lg text-white"
+      />
+    </form>
+  );
+};
+
+export default Login;
