@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Login = () => {
+const Login = (props) => {
   const [formData, setFormData] = useState({
     user: "",
     pass: "",
@@ -33,6 +33,9 @@ const Login = () => {
             try {
               respuestaLogin = JSON.parse(xmlHttpReq.responseText);
               console.log(respuestaLogin);
+              if (respuestaLogin[0].apiKey!="") {
+                props.logeado(true);
+              }
             } catch (error) {
               console.error("Error al parsear la respuesta JSON:", error);
             }

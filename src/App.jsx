@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Header/>
-      <Login/>
+      {logeado ? null : <Login logeado={setLogeado}></Login> }
     </>
   )
 }
