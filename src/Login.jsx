@@ -5,24 +5,17 @@ const Login = () => {
     user: "",
     pass: "",
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (e.target.user.value != "" && e.target.pass.value != "") {
-      setFormData({
-        user: e.target.user.value.trim(),
-        pass: e.target.pass.value.trim(),
-      });
-      console.log(formData);
-    }
-  };
-  useEffect(() => {
-    const respuesta = async () => {
-      const xmlHttpReq = new XMLHttpRequest();
+    const user = e.target.user.value.trim();
+    const pass = e.target.pass.value.trim();
+    console.log(user, pass);
+    if (user !== "" && pass !== "") {
       const formData = new FormData();
-      let respuestaLogin;
-      formData.append("user", formData.user);
-      formData.append("pass", formData.password);
+      formData.append("user", user);
+      formData.append("pass", pass);
+      
+      const xmlHttpReq = new XMLHttpRequest();
       xmlHttpReq.open(
         "POST",
         "https://handmadegames.es/chat/API/v1/chat/login",
@@ -30,18 +23,44 @@ const Login = () => {
       );
       xmlHttpReq.onreadystatechange = () => {
         if (xmlHttpReq.readyState === 4 && xmlHttpReq.status === 200) {
+          let respuestaLogin;
           try {
             respuestaLogin = JSON.parse(xmlHttpReq.responseText);
+            console.log(respuestaLogin);
           } catch (error) {
             console.error("Error al parsear la respuesta JSON:", error);
           }
         }
       };
       xmlHttpReq.send(formData);
-      console.log(respuestaLogin);
-    };
-    respuesta();
-  }, [formData]);
+    }
+  };
+  // useEffect(() => {
+  //   const respuesta = async () => {
+  //     const xmlHttpReq = new XMLHttpRequest();
+  //     const formDataEnviar = new FormData();
+  //     let respuestaLogin;
+  //     formDataEnviar.append("user", formData.user);
+  //     formDataEnviar.append("pass", formData.pass);
+  //     xmlHttpReq.open(
+  //       "POST",
+  //       "https://handmadegames.es/chat/API/v1/chat/login",
+  //       true
+  //     );
+  //     xmlHttpReq.onreadystatechange = () => {
+  //       if (xmlHttpReq.readyState === 4 && xmlHttpReq.status === 200) {
+  //         try {
+  //           respuestaLogin = JSON.parse(xmlHttpReq.responseText);
+  //           console.log(respuestaLogin);
+  //         } catch (error) {
+  //           console.error("Error al parsear la respuesta JSON:", error);
+  //         }
+  //       }
+  //     };
+  //     xmlHttpReq.send(formDataEnviar);
+  //   };
+  //   respuesta();
+  // }, [formData]);
   return (
     <form method="post" className="w-[500px] mx-auto" onSubmit={handleSubmit}>
       <input
