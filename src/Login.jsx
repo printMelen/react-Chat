@@ -35,6 +35,8 @@ const Login = (props) => {
               console.log(respuestaLogin);
               if (respuestaLogin[0].apiKey!="") {
                 props.logeado(true);
+              }else{
+                props.error(true);
               }
             } catch (error) {
               console.error("Error al parsear la respuesta JSON:", error);

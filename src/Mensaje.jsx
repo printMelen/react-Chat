@@ -1,8 +1,12 @@
 import React from 'react'
 
 const Mensaje = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+    }
   return (
-    <form method='post' className="w-[500px] mx-auto">
+    <form method='post' className="w-[500px] mx-auto" onSubmit={handleSubmit}>
         <input
         type="text"
         placeholder="mensaje"
